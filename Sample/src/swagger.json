@@ -8,13 +8,30 @@
 		"schemas": {
 			"PostBaseResponseDto": {
 				"properties": {
-					"id": {
+					"status": {
 						"type": "number",
 						"format": "double"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"properties": {
+							"id": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"id"
+						],
+						"type": "object"
 					}
 				},
 				"required": [
-					"id"
+					"status",
+					"message",
+					"data"
 				],
 				"type": "object",
 				"additionalProperties": true
@@ -33,6 +50,55 @@
 				},
 				"required": [
 					"name",
+					"email",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"UserLoginResponseDto": {
+				"properties": {
+					"status": {
+						"type": "number",
+						"format": "double"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"properties": {
+							"email": {
+								"type": "string"
+							},
+							"name": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"email",
+							"name"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"status",
+					"message",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"UserLoginDto": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
 					"email",
 					"password"
 				],
@@ -70,7 +136,7 @@
 						}
 					},
 					"409": {
-						"description": "이미 존재하는 유저"
+						"description": "Duplicate - 이미 존재하는 유저"
 					}
 				},
 				"tags": [
@@ -84,6 +150,44 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/UserCreateDto"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/signin": {
+			"post": {
+				"operationId": "LoginUser",
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserLoginResponseDto"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found - 이메일에 해당하는 사용자 정보 없음"
+					},
+					"409": {
+						"description": "Invalid - 비밀번호가 올바르지 않음"
+					}
+				},
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserLoginDto"
 							}
 						}
 					}
