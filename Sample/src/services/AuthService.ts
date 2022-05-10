@@ -16,7 +16,7 @@ export class AuthService {
             });
 
             console.log(existCheckUser)
-            if (existCheckUser) throw generateError('Duplicate', 'Exist User');
+            if (existCheckUser) throw generateError('Duplicate');
 
             const newUser = userRepository.create(userCreateDto);
 
@@ -39,10 +39,10 @@ export class AuthService {
             const user = await userRepository.findOne({
                 email: userLoginDto.email
             });
-            if (!user) throw generateError('Not Found', 'User');
+            if (!user) throw generateError('Not Found');
 
             if (!await user.isCorrectPassword(userLoginDto.password)) {
-                throw generateError('Invalid', 'Password');
+                throw generateError('Invalid');
             }
 
             const data = {

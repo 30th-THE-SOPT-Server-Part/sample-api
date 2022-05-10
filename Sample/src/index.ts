@@ -55,10 +55,7 @@ app.use(function errorHandler(
         res.status(status).json({
             status,
             success: false,
-            message: {
-                reason: reason,
-                location: location
-            }
+            message: reason
         });
     }
 
